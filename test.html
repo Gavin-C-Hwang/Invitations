@@ -8,140 +8,72 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 <head>
-    <style>
-        body,
-        h1,
-        h2,
-        h3,
-        h4,
-        h5,
-        h6 {
-            font-family: "Lato", sans-serif;
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script>
+        $(document).ready(function(){
+            retrieveGuestBook();
+            addToServer('title','2018-09-15','2018-09-22','description');
+        })
+        
+        function addToServer(title, gotDate, expiredDate, desc) {
+            jQuery.ajax({
+                type: "POST",
+                url: "https://www.tistory.com/apis/comment/write",
+                data: {
+                    access_token: "dd72c9fe7a101b8c80a47aae88c51611_02df53d1f69b60e8343dd55bf08b8a00",
+                    blogName: "invit",
+                    postId: "4",
+                    content: title + '@xhdtlswk@' + gotDate + '@xhdtlswk@' + expiredDate + '@xhdtlswk@' + desc,
+                    output: 'xml'
+                },
+                success: function(data) {
+                    alert(data);
+                    debugger;
+                },
+                error: function(request,status,error) {
+                   alert("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+                    debugger;
+                },
+                complete: function(data) {
+                    alert(data);
+                    debugger;
+                }
+            })
+        }
+        
+        
+        function retrieveGuestBook() {
+            jQuery.ajax({
+                    method: "GET",
+                    url: "https://www.tistory.com/apis/comment/list",
+                    data: {
+                        access_token: "dd72c9fe7a101b8c80a47aae88c51611_02df53d1f69b60e8343dd55bf08b8a00",
+                        blogName: "invit",
+                        postId: "2",
+                        output: 'json'
+                    },
+                    success: function(data) {
+                        alert(data);
+                        debugger;
+                    }
+                })
+                .done(function(msg) {
+                    var arComments = msg.tistory.item.comments;
+                    var arColors = ["w3-light-grey","w3-grey","w3-dark-grey"];
+                    for(var i in arComments){
+                        var comment = arComments[i].comment.split('@xhdtlswk@');
+                        jQuery('#divGuestBook').prepend('<div class="w3-col l3 m6 '+arColors[i%3]+' w3-container w3-padding-8"><h3>'+comment[0]+'</h3><p>'+comment[1]+'</p></div>')
+                    }
+                    // msg.tistory.item.comments
+                });
+
         }
 
-        body,
-        html {
-            height: 100%;
-            color: #777;
-            line-height: 1.8;
-        }
-
-        .before,
-        .after {
-            height: 500px;
-            background: white;
-            z-index: 2
-        }
-
-        .container {
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            background: white;
-            position: relative;
-        }
-
-        .container .mobile-pralax-container {
-            position: absolute;
-            height: 100%;
-            width: 100%;
-            top: 0;
-            z-index: 2;
-            left: 0;
-            bottom: 0;
-            clip: rect(0, auto, auto, 0);
-        }
-
-        .container .mobile-pralax-container .img {
-            display: block;
-            position: fixed;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            right: 0;
-            z-index: 0;
-            transform: translate3d(0px, 0, 0);
-        }
-
-        img {
-            object-fit: cover;
-            width: 100%;
-            height: 100%;
-        }
-    </style>
+    </script>
 </head>
 
 <body>
-    <div class="container w3-opacity-min">
-        <div class="mobile-pralax-container">
-            <div class="img">
-                <img src="http://cfile6.uf.tistory.com/image/99811F435B99CC4B1A9B49" />
-            </div>
-            <div class="w3-display-container" id="home" style="top: 50%">
-                <div class="w3-display-middle" style="white-space:nowrap;">
-                    <span class="w3-center w3-padding-large w3-black w3-xlarge w3-wide w3-animate-opacity"><span class="w3-hide-small">WEDDING </span>INVITATION </span>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="w3-content w3-container w3-padding-64 before">
-        <h3 class="w3-center">Information</h3>
-        <p class="w3-center"><em>Paragaph1</em></p>
-        <p>We have created a fictional "personal" website/blog, and our fictional character is a hobby photographer. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa
-            qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-    </div>
-    <div class="container w3-opacity-min">
-        <div class="mobile-pralax-container">
-            <div class="img">
-                <img src="http://cfile1.uf.tistory.com/image/99AAD44F5B99CC4C0756E1" />
-            </div>
-            <div class="w3-display-container" id="home" style="top: 50%">
-                <div class="w3-display-middle" style="white-space:nowrap;">
-                    <span class="w3-center w3-padding-large w3-black w3-xlarge w3-wide w3-animate-opacity"><span class="w3-hide-small">WEDDING </span>INVITATION </span>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="w3-content w3-container w3-padding-64 before">
-        <h3 class="w3-center">Information</h3>
-        <p class="w3-center"><em>Paragaph1</em></p>
-        <p>We have created a fictional "personal" website/blog, and our fictional character is a hobby photographer. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa
-            qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-    </div>
-    <div class="container w3-opacity-min">
-        <div class="mobile-pralax-container">
-            <div class="img">
-                <img src="http://cfile2.uf.tistory.com/image/99CCAE415B99CC4B05F86E" />
-            </div>
-            <div class="w3-display-container" id="home" style="top: 50%">
-                <div class="w3-display-middle" style="white-space:nowrap;">
-                    <span class="w3-center w3-padding-large w3-black w3-xlarge w3-wide w3-animate-opacity"><span class="w3-hide-small">WEDDING </span>INVITATION </span>
-                </div>
-            </div>
-        </div>
-
-    </div>
-    <div class="w3-content w3-container w3-padding-64 before">
-        <h3 class="w3-center">Information</h3>
-        <p class="w3-center"><em>Paragaph1</em></p>
-        <p>We have created a fictional "personal" website/blog, and our fictional character is a hobby photographer. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa
-            qui officia deserunt mollit anim id est laborum consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-    </div>
-    <footer class="w3-center w3-black w3-padding-64 w3-opacity w3-hover-opacity-off">
-  <a href="#home" class="w3-button w3-light-grey"><i class="fa fa-arrow-up w3-margin-right"></i>To the top</a>
-  <div class="w3-xlarge w3-section">
-    <i class="fa fa-facebook-official w3-hover-opacity"></i>
-    <i class="fa fa-instagram w3-hover-opacity"></i>
-    <i class="fa fa-snapchat w3-hover-opacity"></i>
-    <i class="fa fa-pinterest-p w3-hover-opacity"></i>
-    <i class="fa fa-twitter w3-hover-opacity"></i>
-    <i class="fa fa-linkedin w3-hover-opacity"></i>
-  </div>
-  <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" title="W3.CSS" target="_blank" class="w3-hover-text-green">w3.css</a></p>
-</footer>
+    <div id="divGuestBook"></div>
 </body>
 
 </html>
